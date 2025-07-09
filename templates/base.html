@@ -1,0 +1,48 @@
+{# templates/base.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nairaxi Car Leasing{% endblock title %}</title>
+    <link rel="stylesheet" href="{% url 'core:dynamic_colors_css' %}">
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Finger+Paint&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif; }
+    </style>
+<!-- 
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script> -->
+
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden">
+    <div class="layout-container flex h-full grow flex-col">
+
+        {% include 'partials/navbar_nairaxi.html' %}
+
+        <main class="flex-1">
+            {% block content %}
+            <!-- Page-specific content will go here -->
+            {% endblock content %}
+        </main>
+
+        {% include 'partials/footer_nairaxi.html' %}
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

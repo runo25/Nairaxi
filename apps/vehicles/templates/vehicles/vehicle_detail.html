@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ vehicle.vehicle_model }} ({{ vehicle.year }}) - Nairaxi{% endblock title %}
+
+{% block extra_head %}
+<style>
+    .gallery-main-image {
+        aspect-ratio: 16 / 9; /* Enforce aspect ratio */
+        object-fit: cover;
+    }
+    .gallery-thumbnails img {
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease-in-out;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+    .gallery-thumbnails img.active-thumbnail,
+    .gallery-thumbnails img:hover {
+        border-color: #1993e5; /* nairaxi-blue */
+    }
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="bg-nairaxi-grey-bg min-h-screen">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+        <!-- Breadcrumbs -->
+        <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="{% url 'core:nairaxi_home' %}" class="text-nairaxi-grey-text hover:text-nairaxi-blue">Home</a>
+                </li>
+                <li>
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" /></svg>
+                </li>
+                <li>
+                    <a href="{% url 'vehicles:vehicle_list' %}" class="text-nairaxi-grey-text hover:text-nairaxi-blue">Vehicles</a>
+                </li>
+                 <li>
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" /></svg>
+                </li>
+                <li>
+                    <span class="font-medium text-nairaxi-dark">{{ vehicle.vehicle_model }}</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="lg:grid lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
+            <!-- Left Column: Image Gallery -->
+            <div class="lg:col-span-2">
+                <div id="property-gallery" class="bg-white rounded-xl shadow-md overflow-hidden" data-aos="fade-up">
+                    <!-- Main Display Image -->
+                    {% if gallery_images %}
+                        <img id="main-gallery-image" src="{{ gallery_images.0.url }}" alt="{{ vehicle.vehicle_model }} - Main View" class="w-full gallery-main-image">
+                    {% else %}
+                        <img id="main-gallery-image" src="{% static 'images/vehicle_placeholder_large.png' %}" alt="Placeholder Vehicle Image" class="w-full gallery-main-image">
+                    {% endif %}
+
+                    <!-- Thumbnails -->
+                    {% if gallery_images|length > 1 %}
+                    <div class="gallery-thumbnails grid grid-cols-5 gap-2 p-2 bg-nairaxi-grey-bg">
+                        {% for image in gallery_images %}
+                            <img src="{{ image.url }}" data-full="{{ image.url }}" alt="Thumbnail of {{ vehicle.vehicle_model }}" class="rounded {% if forloop.first %}active-thumbnail{% endif %}">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Column: Details & CTA -->
+            <div class="lg:col-span-1 mt-10 lg:mt-0">
+                <div class="bg-white p-6 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="100">
+                    <h1 class="text-2xl font-bold text-nairaxi-dark sm:text-3xl">{{ vehicle.vehicle_model }} <span class="text-xl font-medium text-nairaxi-grey-text">({{ vehicle.year }})</span></h1>
+                    
+                    {% if vehicle.category %}
+                    <span class="mt-2 inline-block bg-blue-100 text-nairaxi-blue text-xs font-semibold px-2.5 py-1 rounded-full">{{ vehicle.category.name }}</span>
+                    {% endif %}
+                    
+                    <div class="mt-6">
+                        <p class="text-3xl font-bold text-nairaxi-blue">
+                            ₦{{ vehicle.daily_rate_ngn|floatformat:"0" }}<span class="text-base font-medium text-nairaxi-grey-text">/day</span>
+                        </p>
+                    </div>
+
+                    <div class="mt-8">
+                        <a href="{% url 'leasing:create_lease_application' vehicle_slug=vehicle.slug %}" class="w-full bg-nairaxi-blue border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-nairaxi-blue shadow-lg transition-transform hover:scale-105">
+                            Lease Now
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white p-6 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-lg font-semibold text-nairaxi-dark border-b border-gray-200 pb-3 mb-4">Specifications</h3>
+                    <dl class="space-y-3 text-sm">
+                        {% if vehicle.vehicle_model.make %}
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Make:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.vehicle_model.make.name }}</dd></div>
+                        {% endif %}
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Model:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.vehicle_model.name }}</dd></div>
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Year:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.year }}</dd></div>
+                        {% if vehicle.transmission %}
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Transmission:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.transmission }}</dd></div>
+                        {% endif %}
+                        {% if vehicle.fuel_type %}
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Fuel Type:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.fuel_type }}</dd></div>
+                        {% endif %}
+                        {% if vehicle.color %}
+                        <div class="flex justify-between"><dt class="text-nairaxi-grey-text">Color:</dt> <dd class="font-medium text-nairaxi-dark">{{ vehicle.color }}</dd></div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Description & Features -->
+        <div class="mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+            <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-xl shadow-md" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-nairaxi-dark mb-4">About This Vehicle</h2>
+                <div class="prose max-w-none text-nairaxi-grey-text leading-relaxed">
+                    {{ vehicle.description|linebreaksbr }}
+                </div>
+            </div>
+            {% if vehicle.features.all %}
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="100">
+                <h2 class="text-2xl font-bold text-nairaxi-dark mb-4">Features</h2>
+                <ul class="space-y-3">
+                    {% for feature in vehicle.features.all %}
+                    <li class="flex items-start">
+                        <svg class="flex-shrink-0 h-5 w-5 text-green-500 mt-0.5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                        <span class="text-nairaxi-grey-text">{{ feature.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% if related_vehicles %}
+        <div class="mt-16 lg:mt-24" data-aos="fade-up">
+            <div class="bg-nairaxi-grey-bg py-12 sm:py-16 rounded-xl">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-nairaxi-dark mb-8 text-center">You Might Also Like</h2>
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
+                        {% for related_vehicle in related_vehicles %}
+                            {% include 'partials/vehicle_card_nairaxi_redesigned.html' with vehicle=related_vehicle %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    {# AOS if needed on this page #}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      if (typeof AOS !== 'undefined') { AOS.init({ duration: 800, once: true, offset: 50 }); }
+    </script>
+    
+    <script>
+      // Basic Gallery Thumbnail Click
+      document.addEventListener('DOMContentLoaded', function () {
+          const mainImage = document.getElementById('main-gallery-image');
+          const thumbnails = document.querySelectorAll('.gallery-thumbnails img');
+
+          if (mainImage && thumbnails.length > 0) {
+              thumbnails.forEach(thumb => {
+                  thumb.addEventListener('click', function() {
+                      // Add fade transition
+                      mainImage.style.opacity = 0;
+                      setTimeout(() => {
+                          mainImage.src = this.dataset.full || this.src;
+                          mainImage.style.opacity = 1;
+                      }, 200); // Duration should match CSS transition
+
+                      thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
+                      this.classList.add('active-thumbnail');
+                  });
+              });
+              // Add CSS transition via JS for easier management
+              mainImage.style.transition = 'opacity 0.2s ease-in-out';
+          }
+      });
+    </script>
+{% endblock extra_js %}

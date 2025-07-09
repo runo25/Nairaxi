@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lease Application for {{ vehicle.vehicle_model }}{% endblock title %}
+
+{% block content %}
+<div class="bg-nairaxi-grey-bg py-12 sm:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">Lease Application</h1>
+            <p class="mt-2 text-lg text-nairaxi-grey-text">You're one step away from leasing the <span class="font-semibold text-nairaxi-blue">{{ vehicle.vehicle_model }} ({{ vehicle.year }})</span>.</p>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+            <form method="POST" enctype="multipart/form-data" action="{% url 'leasing:create_lease_application' vehicle_slug=vehicle.slug %}">
+                {% csrf_token %}
+                <div class="space-y-8">
+                    
+                    <!-- Lease Duration -->
+                    <div>
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Lease Duration</h3>
+                        <p class="mt-1 text-sm text-gray-500">Select your desired start and end dates for the lease.</p>
+                        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="{{ form.start_date.id_for_label }}" class="block text-sm font-medium text-gray-700">Start Date</label>
+                                {{ form.start_date }}
+                                {% if form.start_date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.start_date.errors|first }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label for="{{ form.end_date.id_for_label }}" class="block text-sm font-medium text-gray-700">End Date</label>
+                                {{ form.end_date }}
+                                {% if form.end_date.errors %}<p class="mt-1 text-xs text-red-600">{{ form.end_date.errors|first }}</p>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Upload -->
+                    <div class="border-t border-gray-200 pt-8">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Required Documents</h3>
+                        <p class="mt-1 text-sm text-gray-500">Please upload clear copies of the required documents for verification.</p>
+                        <div class="mt-4 space-y-6">
+                            <div>
+                                <label for="{{ form.drivers_license.id_for_label }}" class="block text-sm font-medium text-gray-700">Valid Driver's License</label>
+                                {{ form.drivers_license }}
+                                {% if form.drivers_license.errors %}<p class="mt-1 text-xs text-red-600">{{ form.drivers_license.errors|first }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label for="{{ form.identification_document.id_for_label }}" class="block text-sm font-medium text-gray-700">Identification (e.g., NIN Slip, Passport)</label>
+                                {{ form.identification_document }}
+                                {% if form.identification_document.errors %}<p class="mt-1 text-xs text-red-600">{{ form.identification_document.errors|first }}</p>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="border-t border-gray-200 pt-8">
+                         <h3 class="text-lg font-medium leading-6 text-gray-900">Terms & Conditions</h3>
+                         <div class="mt-4 p-4 border rounded-md max-h-40 overflow-y-auto text-sm text-gray-600 bg-gray-50">
+                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. ... [Your full lease terms go here] ... By checking the box below, you confirm you have read, understood, and agree to be bound by these terms.</p>
+                         </div>
+                         <div class="mt-4 flex items-start">
+                            <div class="flex items-center h-5">
+                                {{ form.terms_agreed }}
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="{{ form.terms_agreed.id_for_label }}" class="font-medium text-gray-700">I agree to the lease terms and conditions.</label>
+                                {% if form.terms_agreed.errors %}<p class="mt-1 text-xs text-red-600">{{ form.terms_agreed.errors|first }}</p>{% endif %}
+                            </div>
+                         </div>
+                    </div>
+                </div>
+
+                {% if form.non_field_errors %}
+                <div class="mt-6 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-md">
+                    {{ form.non_field_errors|first }}
+                </div>
+                {% endif %}
+
+                <div class="mt-8 pt-5 border-t border-gray-200">
+                    <div class="flex justify-end">
+                        <a href="{{ vehicle.get_absolute_url }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">Cancel</a>
+                        <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-nairaxi-blue hover:bg-blue-700">
+                            Submit Application
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %} {# We'll use this for better number formatting #}
+
+{% block title %}Complete Payment for {{ payment.lease_application.vehicle }}{% endblock title %}
+
+{% block content %}
+<div class="bg-nairaxi-grey-bg py-16 sm:py-24">
+    <div class="max-w-2xl mx-auto px-4">
+        
+        <div class="text-center">
+            <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">Complete Your Payment</h1>
+            <p class="mt-4 text-lg text-nairaxi-grey-text">You're about to complete the payment for the lease of the <span class="font-semibold text-nairaxi-blue">{{ payment.lease_application.vehicle }}</span>.</p>
+        </div>
+
+        <div class="mt-10 p-6 sm:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-xl font-semibold text-nairaxi-dark mb-6 border-b pb-4">Payment Summary</h2>
+            <dl class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <dt class="text-sm text-nairaxi-grey-text">Leased Vehicle:</dt>
+                    <dd class="text-sm font-semibold text-nairaxi-dark">{{ payment.lease_application.vehicle }}</dd>
+                </div>
+                <div class="flex justify-between items-center">
+                    <dt class="text-sm text-nairaxi-grey-text">Your Email:</dt>
+                    <dd class="text-sm font-semibold text-nairaxi-dark">{{ payment.email }}</dd>
+                </div>
+                 <div class="flex justify-between items-center">
+                    <dt class="text-sm text-nairaxi-grey-text">Payment Reference:</dt>
+                    <dd class="font-mono text-xs text-nairaxi-grey-text bg-nairaxi-grey-bg px-2 py-1 rounded">{{ payment.reference }}</dd>
+                </div>
+                <div class="flex justify-between items-center border-t pt-4 mt-4">
+                    <dt class="text-base font-bold text-nairaxi-dark">Total Amount Due:</dt>
+                    <dd class="text-2xl font-bold text-nairaxi-blue">₦{{ payment.amount|floatformat:"0"|intcomma }}</dd> {# e.g., 1,500,000 #}
+                </div>
+            </dl>
+        </div>
+
+        <div class="mt-10">
+            <button onclick="payWithPaystack()" 
+                    class="w-full flex items-center justify-center bg-nairaxi-blue text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                Pay Securely with Paystack
+            </button>
+        </div>
+        <p class="mt-4 text-center text-xs text-nairaxi-grey-text">You will be redirected to Paystack's secure checkout page.</p>
+
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+    function payWithPaystack() {
+        const handler = PaystackPop.setup({
+            key: '{{ paystack_public_key }}', // pk_test_xxxx from your settings
+            email: '{{ payment.email }}',
+            amount: Math.round({{ payment.amount }} * 100), // Amount in kobo, rounded to avoid float issues
+            ref: '{{ payment.reference }}',
+            // The metadata object allows you to pass additional data
+            metadata: {
+                application_id: {{ payment.lease_application.id }},
+                customer_id: {{ request.user.id }},
+                custom_fields: [
+                    {
+                        display_name: "Leased Vehicle",
+                        variable_name: "leased_vehicle",
+                        value: "{{ payment.lease_application.vehicle }}"
+                    }
+                ]
+            },
+            // This function is called after Paystack processes the transaction
+            callback: function(response){
+                // After the callback, redirect the user to your verification URL.
+                // Your backend `verify_payment` view will do the actual secure verification.
+                window.location.href = "{% url 'leasing:verify_payment' payment.reference %}";
+            },
+            onClose: function(){
+                // This is called if the user closes the popup without completing the payment
+                alert('Payment window closed. Your transaction was not completed.');
+            }
+        });
+        handler.openIframe();
+    }
+</script>
+{% endblock extra_js %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Our Vehicle Fleet - Nairaxi{% endblock title %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold text-nairaxi-dark mb-8 text-center sm:text-left">Available Vehicles</h1>
+    
+    {% comment %} You would insert your refined filter section here {% endcomment %}
+    
+    {% if vehicles %}
+        {# Change: Added 'justify-items-center' to center grid items on all screen sizes #}
+        {# This is especially effective on mobile where it's a single column #}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+            {% for vehicle_obj in vehicles %}
+                {% include 'partials/vehicle_card_nairaxi_redesigned.html' with vehicle=vehicle_obj forloop_counter0=forloop.counter0 %}
+            {% endfor %}
+        </div>
+
+        <!-- Pagination (already responsive and centered on mobile) -->
+            {% if vehicles.has_other_pages %}
+            <nav class="mt-16 flex items-center justify-between border-t border-gray-200 pt-8" aria-label="Pagination">
+                <div class="flex flex-1 justify-between sm:justify-center">
+                    {% if vehicles.has_previous %}
+                        <a href="?page={{ vehicles.previous_page_number }}&{{ get_params_urlencode }}"
+                        class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    <div class="hidden sm:flex sm:items-baseline sm:space-x-4 mx-4">
+                        <p class="text-sm text-gray-700">
+                            Page <span class="font-medium">{{ vehicles.number }}</span> of <span class="font-medium">{{ vehicles.paginator.num_pages }}</span>
+                        </p>
+                    </div>
+
+                    {% if vehicles.has_next %}
+                        <a href="?page={{ vehicles.next_page_number }}&{{ get_params_urlencode }}"
+                        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            Next
+                        </a>
+                    {% endif %}
+                </div>
+            </nav>
+            {% endif %}
+    {% else %}
+        <p class="text-gray-600 text-center py-10">No vehicles currently available. Please check back soon!</p>
+    {% endif %}
+</div>
+{% endblock content %}
