@@ -9,9 +9,9 @@ class SiteSettings(models.Model):
     # This is a Singleton model - we only want one instance of it.
     
     # --- Contact Information ---
-    primary_phone_number = models.CharField(max_length=20, blank=True, help_text="e.g., +234 801 234 5678")
+    primary_phone_number = models.CharField(max_length=20, blank=True, help_text="e.g., +234 915 5541 159")
     secondary_phone_number = models.CharField(max_length=20, blank=True, help_text="Optional second contact number")
-    primary_whatsapp_number = models.CharField(max_length=20, blank=True, help_text="WhatsApp number including country code, e.g., 2348012345678 (no '+')")
+    primary_whatsapp_number = models.CharField(max_length=20, blank=True, help_text="WhatsApp number including country code, e.g., 2349155541159 (no '+')")
     primary_email = models.EmailField(blank=True, help_text="Main contact/support email address")
     office_address = models.TextField(blank=True, help_text="Full office address, use line breaks for formatting.")
 

@@ -1,0 +1,34 @@
+# Python
+*.pyc
+__pycache__/
+venv_nairaxi/
+*.pyo
+*.pyd
+.python-version
+
+# Django
+*.log
+*.pot
+
+
+# Environment files
+.env
+.env.local
+
+# Node.js
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Local development files
+db.sqlite3
+error.txt
+
+# Media storage (user-uploaded content)
+media/

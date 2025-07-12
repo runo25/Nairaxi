@@ -46,7 +46,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+  font-family: Bonny-Regular, sans-serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -1123,12 +1123,6 @@ select {
   resize: both !important;
 }
 
-.appearance-none {
-  -webkit-appearance: none !important;
-     -moz-appearance: none !important;
-          appearance: none !important;
-}
-
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
 }
@@ -1312,6 +1306,10 @@ select {
 
 .border-b {
   border-bottom-width: 1px !important;
+}
+
+.border-l {
+  border-left-width: 1px !important;
 }
 
 .border-t {
@@ -1554,6 +1552,18 @@ select {
   padding-bottom: 1rem !important;
 }
 
+.pl-4 {
+  padding-left: 1rem !important;
+}
+
+.pl-6 {
+  padding-left: 1.5rem !important;
+}
+
+.pr-10 {
+  padding-right: 2.5rem !important;
+}
+
 .pt-3 {
   padding-top: 0.75rem !important;
 }
@@ -1792,16 +1802,6 @@ select {
   color: rgb(133 77 14 / var(--tw-text-opacity)) !important;
 }
 
-.placeholder-gray-400::-moz-placeholder {
-  --tw-placeholder-opacity: 1 !important;
-  color: rgb(156 163 175 / var(--tw-placeholder-opacity)) !important;
-}
-
-.placeholder-gray-400::placeholder {
-  --tw-placeholder-opacity: 1 !important;
-  color: rgb(156 163 175 / var(--tw-placeholder-opacity)) !important;
-}
-
 .opacity-0 {
   opacity: 0 !important;
 }
@@ -1990,11 +1990,6 @@ body {
 
 .focus\:w-40:focus {
   width: 10rem !important;
-}
-
-.focus\:border-indigo-500:focus {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(99 102 241 / var(--tw-border-opacity)) !important;
 }
 
 .focus\:border-nairaxi-blue:focus {
@@ -2202,11 +2197,6 @@ body {
     line-height: 1.75rem !important;
   }
 
-  .sm\:text-sm {
-    font-size: 0.875rem !important;
-    line-height: 1.25rem !important;
-  }
-
   .sm\:text-xl {
     font-size: 1.25rem !important;
     line-height: 1.75rem !important;
@@ -2297,10 +2287,6 @@ body {
     margin-top: 6rem !important;
   }
 
-  .lg\:block {
-    display: block !important;
-  }
-
   .lg\:flex {
     display: flex !important;
   }
@@ -2389,6 +2375,10 @@ body {
 
   .xl\:mt-0 {
     margin-top: 0px !important;
+  }
+
+  .xl\:block {
+    display: block !important;
   }
 
   .xl\:grid {

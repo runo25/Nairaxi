@@ -1,0 +1,63 @@
+/**
+* @license
+*
+* Font Family: Bonny
+* Designed by: Barbara Bigosinska
+* URL: https://www.fontshare.com/fonts/bonny
+* © 2025 Indian Type Foundry
+*
+*/
+
+@font-face {
+  font-family: 'Bonny';
+  src: url('../../../fonts/bonny/Bonny-Regular.woff2') format('woff2'),
+       url('../../../fonts/bonny/Bonny-Regular.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+/* Do this for ALL @font-face rules in the file */
+@font-face {
+  font-family: 'Bonny-Light';
+  src: url('../../fonts/bonny/Bonny-Light.woff2') format('woff2'),
+       url('../../fonts/bonny/Bonny-Light.woff') format('woff');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bonny-Regular';
+  src: url('../../fonts/bonny/Bonny-Regular.woff2') format('woff2'),
+       url('../../fonts/bonny/Bonny-Regular.woff') format('woff');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bonny-Medium';
+  src: url('../../fonts/bonny/Bonny-Medium.woff2') format('woff2'),
+       url('../../fonts/bonny/Bonny-Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bonny-Bold';
+  src: url('../../fonts/bonny/Bonny-Bold.woff2') format('woff2'),
+       url('../../fonts/bonny/Bonny-Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+/**
+* This is a variable font - using this one is often the most efficient option
+*/
+@font-face {
+  font-family: 'Bonny-Variable';
+  src: url('../../fonts/bonny/Bonny-Variable.woff2') format('woff2'),
+       url('../../fonts/bonny/Bonny-Variable.woff') format('woff');
+  font-weight: 100 700;
+  font-display: swap;
+  font-style: normal;
+}

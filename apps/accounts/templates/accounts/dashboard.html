@@ -12,7 +12,7 @@
         <div class="mb-10 md:flex md:items-center md:justify-between">
             <div class="flex-1 min-w-0">
                 <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">
-                    Welcome, {{ user.username|capfirst }}!
+                    Welcome, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email|truncatechars:20 }}{% endif %}!
                 </h1>
                 <p class="mt-2 text-base text-nairaxi-grey-text">
                     Here you can manage your lease applications and view their status.

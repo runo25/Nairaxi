@@ -9,7 +9,6 @@ from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
-
 from apps.vehicles.models import Vehicle
 from .forms import LeaseApplicationForm
 from .models import LeaseApplication, Payment

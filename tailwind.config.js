@@ -35,8 +35,9 @@ module.exports = {
         'nairaxi-border': '#dce1e5',
       },
       
+
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', '"Noto Sans"', 'sans-serif'], // Main body font
+        sans: ['Bonny-Regular', 'sans-serif'],
         'cabin-sketch': ['"Cabin Sketch"', 'sans-serif'],
         'finger-paint': ['"Finger Paint"', 'sans-serif'],
       },

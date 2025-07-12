@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings # To link to the User model
 from apps.vehicles.models import Vehicle
 import secrets # For generating a unique reference
+from decimal import Decimal
 
 
 class LeaseApplication(models.Model):
