@@ -9,6 +9,7 @@ venv_nairaxi/
 # Django
 *.log
 *.pot
+*.sqlite3
 
 
 # Environment files
