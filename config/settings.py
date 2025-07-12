@@ -36,7 +36,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-23pfa6b7bvs5)au3rl0nsct9@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').upper() == 'TRUE'
 
-ALLOWED_HOSTS = [    
+ALLOWED_HOSTS = [ 
+    'Nairaxi.pythonanywhere.com',   
     'nairaxi.pythonanywhere.com',
     'www.nairaxi.pythonanywhere.com',
     '127.0.0.1',
