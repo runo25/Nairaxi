@@ -149,67 +149,6 @@ def verify_payment(request, reference):
     return redirect('leasing:payment_failed') # Redirect to failure page on any error
 
 
-
-
-
-
-
-
-
-
-# --- View 3: Verify Payment after User is Redirected from Paystack ---
-@login_required
-def verify_payment(request, reference):
-    try:
-        payment = Payment.objects.get(reference=reference, lease_application__customer=request.user)
-    except Payment.DoesNotExist:
-        messages.error(request, "Invalid payment reference.")
-        return redirect('core:nairaxi_home')
-
-    if payment.status == 'Successful':
-        messages.info(request, "This payment has already been verified.")
-        return redirect('leasing:payment_success') # Go to success page
-
-    url = f'https://api.paystack.co/transaction/verify/{reference}'
-    headers = {'Authorization': f'Bearer {settings.PAYSTACK_SECRET_KEY}'}
-    
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status() # Raise an exception for HTTP errors
-        response_data = response.json()
-
-        if response_data['status'] is True and response_data['data']['status'] == 'success':
-            paystack_amount_kobo = response_data['data']['amount']
-            if int(payment.amount * 100) == paystack_amount_kobo:
-                payment.status = 'Successful'
-                payment.paystack_charge_id = response_data['data']['id']
-                payment.save()
-
-                lease = payment.lease_application
-                lease.status = 'Active'
-                lease.save()
-                
-                vehicle = lease.vehicle
-                vehicle.availability_status = 'Leased'
-                vehicle.save()
-                
-                messages.success(request, f"Payment for {lease.vehicle} was successful!")
-                return redirect('leasing:payment_success')
-            else:
-                payment.status = 'Failed'
-                payment.save()
-                messages.error(request, "Payment amount mismatch. Please contact support.")
-        else:
-            payment.status = 'Failed'
-            payment.save()
-            gateway_response = response_data.get('data', {}).get('gateway_response', 'Payment failed.')
-            messages.error(request, f"Payment failed: {gateway_response}")
-
-    except requests.exceptions.RequestException as e:
-        messages.error(request, f"Could not connect to payment service. Please try again later.")
-    
-    return redirect('leasing:payment_failed') # Redirect to failure page
-
 # --- Optional but Recommended: Webhook View ---
 @csrf_exempt
 def paystack_webhook(request):
