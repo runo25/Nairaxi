@@ -947,6 +947,10 @@ select {
   margin-bottom: 1.25rem !important;
 }
 
+.-ml-1 {
+  margin-left: -0.25rem !important;
+}
+
 .line-clamp-2 {
   overflow: hidden !important;
   display: -webkit-box !important;
@@ -2192,10 +2196,21 @@ body {
     gap: 2rem !important;
   }
 
+  .sm\:gap-x-6 {
+    -moz-column-gap: 1.5rem !important;
+         column-gap: 1.5rem !important;
+  }
+
   .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0 !important;
     margin-right: calc(1rem * var(--tw-space-x-reverse)) !important;
     margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse))) !important;
+  }
+
+  .sm\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0 !important;
+    margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse))) !important;
+    margin-bottom: calc(0px * var(--tw-space-y-reverse)) !important;
   }
 
   .sm\:rounded-lg {
