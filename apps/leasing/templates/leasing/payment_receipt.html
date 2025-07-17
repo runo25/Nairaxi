@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Payment Receipt - {{ payment.reference }}{% endblock title %}
+
+{% block content %}
+<div class="bg-nairaxi-grey-bg py-16 sm:py-24">
+    <div class="max-w-3xl mx-auto px-4">
+        
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200">
+            <!-- Header -->
+            <div class="p-6 sm:p-8 border-b border-gray-200 text-center">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-5">
+                    <svg class="h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-extrabold text-gray-900">Payment Successful!</h1>
+                <p class="mt-2 text-base text-gray-500">Your lease is now active. Here are the details of your transaction.</p>
+            </div>
+
+            <!-- Receipt Details -->
+            <div class="p-6 sm:p-8">
+                <h2 class="text-lg font-semibold text-nairaxi-dark mb-4">Transaction Details</h2>
+                <dl class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <dt class="text-sm text-nairaxi-grey-text">Receipt Number:</dt>
+                        <dd class="font-mono text-sm text-nairaxi-dark">{{ payment.reference }}</dd>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <dt class="text-sm text-nairaxi-grey-text">Date Paid:</dt>
+                        <dd class="text-sm font-medium text-nairaxi-dark">{{ payment.created_at|date:"d M, Y, P" }}</dd>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <dt class="text-sm text-nairaxi-grey-text">Paystack Charge ID:</dt>
+                        <dd class="font-mono text-xs text-nairaxi-grey-text">{{ payment.paystack_charge_id }}</dd>
+                    </div>
+                    <div class="flex justify-between items-center border-t pt-4 mt-4">
+                        <dt class="text-base font-bold text-nairaxi-dark">Total Amount Paid:</dt>
+                        <dd class="text-2xl font-bold text-nairaxi-blue">₦{{ payment.amount|floatformat:"0"|intcomma }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <!-- Lease Details -->
+            <div class="p-6 sm:p-8 border-t border-gray-200">
+                <h2 class="text-lg font-semibold text-nairaxi-dark mb-4">Lease Details</h2>
+                <dl class="space-y-4">
+                     <div class="flex justify-between items-center">
+                        <dt class="text-sm text-nairaxi-grey-text">Vehicle:</dt>
+                        <dd class="text-sm font-medium text-nairaxi-dark">{{ payment.lease_application.vehicle }}</dd>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <dt class="text-sm text-nairaxi-grey-text">Lease Period:</dt>
+                        <dd class="text-sm font-medium text-nairaxi-dark">{{ payment.lease_application.start_date|date:"d M, Y" }} to {{ payment.lease_application.end_date|date:"d M, Y" }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+             <!-- Pickup Instructions -->
+            <div class="p-6 sm:p-8 border-t border-gray-200 bg-blue-50 rounded-b-xl">
+                <h2 class="text-lg font-semibold text-nairaxi-blue mb-4">Vehicle Pickup Instructions</h2>
+                <p class="text-sm text-gray-700">
+                    You can pick up your vehicle during our operating hours. Please present a valid ID and this receipt number (<span class="font-semibold">{{ payment.reference }}</span>) at our office.
+                </p>
+                <div class="mt-4 text-sm text-gray-600">
+                    <p><strong class="font-medium text-gray-800">Pickup Location:</strong> {{ site_settings.office_address|default:'[Our Office Address]' }}</p>
+                    <p><strong class="font-medium text-gray-800">Operating Hours:</strong> Monday - Friday: 9 AM - 5 PM</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 text-center">
+            <a href="{% url 'accounts:dashboard' %}" class="text-sm font-semibold leading-6 text-nairaxi-blue group">
+                Go to My Dashboard <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

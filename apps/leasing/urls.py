@@ -17,7 +17,7 @@ urlpatterns = [
     path('verify-payment/<str:reference>/', views.verify_payment, name='verify_payment'),
     
     # Simple static pages for redirecting after payment verification
-    path('payment/success/', views.payment_success, name='payment_success'),
+    path('receipt/<str:reference>/', views.payment_receipt_view, name='payment_receipt'),
     path('payment/failed/', views.payment_failed, name='payment_failed'),
 
     # Optional but recommended: The webhook URL for server-to-server updates

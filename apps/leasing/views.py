@@ -86,6 +86,77 @@ def initiate_payment(request, application_id):
     }
     return render(request, 'leasing/make_payment.html', context)
 
+
+
+
+
+
+
+
+# --- REVISE View 3: Verify Payment ---
+@login_required
+def verify_payment(request, reference):
+    try:
+        payment = Payment.objects.get(reference=reference, lease_application__customer=request.user)
+    except Payment.DoesNotExist:
+        messages.error(request, "Invalid payment reference.")
+        return redirect('core:nairaxi_home')
+
+    # If already successful, just redirect to the receipt page to prevent re-processing
+    if payment.status == 'Successful':
+        return redirect('leasing:payment_receipt', reference=payment.reference)
+
+    url = f'https://api.paystack.co/transaction/verify/{reference}'
+    headers = {'Authorization': f'Bearer {settings.PAYSTACK_SECRET_KEY}'}
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        response_data = response.json()
+
+        if response_data['status'] is True and response_data['data']['status'] == 'success':
+            paystack_amount_kobo = response_data['data']['amount']
+            if int(payment.amount * 100) == paystack_amount_kobo:
+                payment.status = 'Successful'
+                payment.paystack_charge_id = response_data['data']['id']
+                # You can parse and save the paid_at timestamp from response_data['data']['paid_at']
+                payment.save()
+
+                lease = payment.lease_application
+                lease.status = 'Active'
+                lease.save()
+                
+                vehicle = lease.vehicle
+                vehicle.availability_status = 'Leased'
+                vehicle.save()
+                
+                # Instead of a simple message, we redirect to a detailed receipt page
+                # The receipt page can show its own success message
+                return redirect('leasing:payment_receipt', reference=payment.reference)
+            else:
+                payment.status = 'Failed'
+                payment.save()
+                messages.error(request, "Payment amount mismatch. Please contact support.")
+        else:
+            payment.status = 'Failed'
+            payment.save()
+            gateway_response = response_data.get('data', {}).get('gateway_response', 'Payment failed.')
+            messages.error(request, f"Payment failed: {gateway_response}")
+
+    except requests.exceptions.RequestException:
+        messages.error(request, f"Could not connect to payment service. Please try again later.")
+    
+    return redirect('leasing:payment_failed') # Redirect to failure page on any error
+
+
+
+
+
+
+
+
+
+
 # --- View 3: Verify Payment after User is Redirected from Paystack ---
 @login_required
 def verify_payment(request, reference):
@@ -171,9 +242,19 @@ def paystack_webhook(request):
     # Return a 400 for non-POST requests
     return HttpResponse(status=400)
 
-# --- View 4 & 5: Simple Success and Failure Pages ---
-def payment_success(request):
-    return render(request, 'leasing/payment_success.html')
 
+# --- REVISE View 4: Rename payment_success to payment_receipt_view ---
+@login_required
+def payment_receipt_view(request, reference):
+    """
+    Displays a detailed receipt for a successful payment.
+    """
+    payment = get_object_or_404(Payment, reference=reference, status='Successful', lease_application__customer=request.user)
+    context = {
+        'payment': payment,
+    }
+    return render(request, 'leasing/payment_receipt.html', context)
+
+# --- View 5: payment_failed remains the same ---
 def payment_failed(request):
     return render(request, 'leasing/payment_failed.html')

@@ -943,6 +943,10 @@ select {
   margin-top: 2rem !important;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem !important;
+}
+
 .line-clamp-2 {
   overflow: hidden !important;
   display: -webkit-box !important;
@@ -1313,6 +1317,11 @@ select {
 
 .rounded-xl {
   border-radius: 1rem !important;
+}
+
+.rounded-b-xl {
+  border-bottom-right-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
 }
 
 .rounded-br-\[50px\] {
