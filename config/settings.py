@@ -213,9 +213,22 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# EMAIL CONFIGURATION (for Development)
+# EMAIL CONFIGURATION
+# ------------------------------------------------------------------------------
+# For development, print emails to the console.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# You can set default addresses to use in your views
-ADMIN_EMAIL_ADDRESS = 'admin@nairaxi.com' # The address that will receive notifications
-DEFAULT_FROM_EMAIL = 'Nairaxi Leasing <noreply@nairaxi.com>' # How the "From" field will look
+# The default email address to use for various automated correspondence from
+# the site manager(s).
+DEFAULT_FROM_EMAIL = 'Nairaxi Leasing <noreply@nairaxi.com>'
+
+# The email address that error messages come from, such as those sent to ADMINS.
+SERVER_EMAIL = 'Nairaxi Server <server-errors@nairaxi.com>'
+
+# A list of all the people who get code error notifications.
+ADMINS = [
+    ('Admin', 'oawhie@gmail.com'),
+]
+
+# The email address for your main business contact/operator.
+OPERATOR_EMAIL = os.getenv('OPERATOR_EMAIL', 'oawhie@gmail.com') # We'll use this as the recipient for notifications

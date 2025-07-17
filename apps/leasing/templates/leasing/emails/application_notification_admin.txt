@@ -1,0 +1,14 @@
+Hi Admin,
+
+A new lease application has been submitted and requires your review.
+
+Application Details:
+--------------------
+Customer: {{ application.customer.username }} ({{ application.customer.email }})
+Vehicle: {{ application.vehicle }}
+Lease Period: {{ application.start_date|date:"d M, Y" }} to {{ application.end_date|date:"d M, Y" }}
+Application ID: {{ application.id }}
+
+Please log in to the admin panel to review the documents and approve or reject the application.
+
+Link to Admin: {{ admin_url }}

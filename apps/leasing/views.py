@@ -14,6 +14,9 @@ from .forms import LeaseApplicationForm
 from .models import LeaseApplication, Payment
 from django.core.mail import send_mail # Import send_mail
 from django.template.loader import render_to_string # To render email templates
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 
 # --- View 1: Create the Lease Application ---
 @login_required
@@ -26,10 +29,49 @@ def create_lease_application(request, vehicle_slug):
             application = form.save(commit=False)
             application.customer = request.user
             application.vehicle = vehicle
-            application.save() # This now also calculates and saves initial_payment_due
+            application.save()
+
+            # --- START OF NEW EMAIL LOGIC ---
+            try:
+                # --- Email to User ---
+                user_subject = f"Your Nairaxi Lease Application for {vehicle} has been received"
+                user_message = render_to_string('leasing/emails/application_confirmation_user.txt', {
+                    'user': request.user,
+                    'application': application,
+                })
+                send_mail(
+                    subject=user_subject,
+                    message=user_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[request.user.email],
+                    fail_silently=False,
+                )
+
+                # --- Email to Admin/Operator ---
+                admin_subject = f"New Lease Application for Review: {vehicle}"
+                admin_url = request.build_absolute_uri(
+                    reverse('admin:leasing_leaseapplication_change', args=(application.id,))
+                )
+                admin_message = render_to_string('leasing/emails/application_notification_admin.txt', {
+                    'application': application,
+                    'admin_url': admin_url,
+                })
+                send_mail(
+                    subject=admin_subject,
+                    message=admin_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.OPERATOR_EMAIL], # Assumes OPERATOR_EMAIL is in settings.py
+                    fail_silently=False,
+                )
+            except Exception as e:
+                # Optional: Log the error if email sending fails, but don't crash the whole view
+                print(f"Error sending application email: {e}")
+                messages.warning(request, "Your application was submitted, but there was an issue sending a confirmation email.")
+            # --- END OF NEW EMAIL LOGIC ---
             
-            messages.success(request, f"Your lease application for the {vehicle} has been submitted successfully! We will review it shortly.")
-            # Redirect to a user dashboard or homepage after applying
+            # The original message is now redundant as we have a dedicated page
+            # messages.success(request, f"...")
+
             return redirect('leasing:application_submitted', application_id=application.id)
     else:
         form = LeaseApplicationForm()
@@ -39,6 +81,7 @@ def create_lease_application(request, vehicle_slug):
         'vehicle': vehicle
     }
     return render(request, 'leasing/lease_application.html', context)
+
 
 
 @login_required
