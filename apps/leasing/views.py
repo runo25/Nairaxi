@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from apps.vehicles.models import Vehicle
 from .forms import LeaseApplicationForm
 from .models import LeaseApplication, Payment
+from django.core.mail import send_mail # Import send_mail
+from django.template.loader import render_to_string # To render email templates
 
 # --- View 1: Create the Lease Application ---
 @login_required
@@ -28,7 +30,7 @@ def create_lease_application(request, vehicle_slug):
             
             messages.success(request, f"Your lease application for the {vehicle} has been submitted successfully! We will review it shortly.")
             # Redirect to a user dashboard or homepage after applying
-            return redirect('core:nairaxi_home') 
+            return redirect('leasing:application_submitted', application_id=application.id)
     else:
         form = LeaseApplicationForm()
 
@@ -37,6 +39,21 @@ def create_lease_application(request, vehicle_slug):
         'vehicle': vehicle
     }
     return render(request, 'leasing/lease_application.html', context)
+
+
+@login_required
+def application_submitted_view(request, application_id):
+    """
+    Displays a confirmation page after a lease application is successfully submitted.
+    """
+    application = get_object_or_404(LeaseApplication, pk=application_id, customer=request.user)
+    context = {
+        'application': application,
+    }
+    return render(request, 'leasing/application_submitted.html', context)
+
+
+
 
 # --- View 2: Show Payment Details and Paystack Button ---
 @login_required

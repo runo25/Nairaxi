@@ -939,6 +939,10 @@ select {
   margin-top: 2rem !important;
 }
 
+.mt-3 {
+  margin-top: 0.75rem !important;
+}
+
 .line-clamp-2 {
   overflow: hidden !important;
   display: -webkit-box !important;
@@ -1095,6 +1099,10 @@ select {
   max-width: none !important;
 }
 
+.max-w-3xl {
+  max-width: 48rem !important;
+}
+
 .flex-1 {
   flex: 1 1 0% !important;
 }
@@ -1191,6 +1199,11 @@ select {
   gap: 2rem !important;
 }
 
+.gap-x-6 {
+  -moz-column-gap: 1.5rem !important;
+       column-gap: 1.5rem !important;
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0 !important;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse)) !important;
@@ -1237,6 +1250,12 @@ select {
   --tw-space-y-reverse: 0 !important;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse))) !important;
   margin-bottom: calc(2rem * var(--tw-space-y-reverse)) !important;
+}
+
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0 !important;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse)) !important;
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse))) !important;
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1340,6 +1359,10 @@ select {
   border-color: transparent !important;
 }
 
+.border-nairaxi-blue {
+  border-color: var(--color-brand-primary) !important;
+}
+
 .bg-blue-100 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity)) !important;
@@ -1405,6 +1428,11 @@ select {
 .bg-yellow-100 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity)) !important;
+}
+
+.bg-blue-50 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity)) !important;
 }
 
 .object-cover {
@@ -1542,6 +1570,11 @@ select {
 .py-8 {
   padding-top: 2rem !important;
   padding-bottom: 2rem !important;
+}
+
+.px-3\.5 {
+  padding-left: 0.875rem !important;
+  padding-right: 0.875rem !important;
 }
 
 .pb-3 {
@@ -2030,6 +2063,22 @@ body {
   --tw-ring-offset-color: #111827 !important;
 }
 
+.focus-visible\:outline:focus-visible {
+  outline-style: solid !important;
+}
+
+.focus-visible\:outline-2:focus-visible {
+  outline-width: 2px !important;
+}
+
+.focus-visible\:outline-offset-2:focus-visible {
+  outline-offset: 2px !important;
+}
+
+.focus-visible\:outline-nairaxi-blue:focus-visible {
+  outline-color: var(--color-brand-primary) !important;
+}
+
 .active\:scale-95:active {
   --tw-scale-x: .95 !important;
   --tw-scale-y: .95 !important;
@@ -2038,6 +2087,11 @@ body {
 
 .group:hover .group-hover\:w-40 {
   width: 10rem !important;
+}
+
+.group:hover .group-hover\:translate-x-1 {
+  --tw-translate-x: 0.25rem !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
 .group:hover .group-hover\:scale-105 {

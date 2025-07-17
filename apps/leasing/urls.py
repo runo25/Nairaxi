@@ -7,6 +7,8 @@ app_name = 'leasing'
 urlpatterns = [
     # URL to show and submit the lease application form
     path('apply/<slug:vehicle_slug>/', views.create_lease_application, name='create_lease_application'),
+
+    path('application-submitted/<int:application_id>/', views.application_submitted_view, name='application_submitted'),
     
     # URL for the user to view payment details and start the Paystack process
     path('pay/<int:application_id>/', views.initiate_payment, name='initiate_payment'),

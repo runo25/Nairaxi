@@ -212,3 +212,10 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
+
+# EMAIL CONFIGURATION (for Development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# You can set default addresses to use in your views
+ADMIN_EMAIL_ADDRESS = 'admin@nairaxi.com' # The address that will receive notifications
+DEFAULT_FROM_EMAIL = 'Nairaxi Leasing <noreply@nairaxi.com>' # How the "From" field will look

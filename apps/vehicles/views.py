@@ -1,31 +1,38 @@
 # apps/vehicles/views.py
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from .models import Vehicle # Assuming you'll list Vehicle objects
-# from .forms import PropertyFilterForm # If you have a filter form
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import Vehicle, VehicleCategory, VehicleMake # Import new models
+from .forms import VehicleFilterForm # Import our new form
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def vehicle_list_view(request):
-    # Basic placeholder logic - we'll enhance this later
     vehicle_list_qs = Vehicle.objects.filter(is_published=True).order_by('-date_added')
     
-    # Example of adding filter form logic if you have it
-    # filter_form = PropertyFilterForm(request.GET or None)
-    # if filter_form.is_valid():
-    #     # Apply filters to vehicle_list_qs
-    #     pass
+    # Initialize form with any GET data from the URL
+    filter_form = VehicleFilterForm(request.GET or None)
 
-    # Search functionality
-    keywords = request.GET.get('keywords', '')
-    if keywords:
-        vehicle_list_qs = vehicle_list_qs.filter(
-            Q(vehicle_model__name__icontains=keywords) |
-            Q(description__icontains=keywords) |
-            Q(vehicle_model__make__name__icontains=keywords)
-        ).distinct()
+    if filter_form.is_valid():
+        # Get cleaned data from the form
+        category = filter_form.cleaned_data.get('category')
+        make = filter_form.cleaned_data.get('make')
+        keywords = filter_form.cleaned_data.get('keywords', request.GET.get('keywords', '')) # Keep existing keyword logic
 
-    paginator = Paginator(vehicle_list_qs, 9) # Show 9 vehicles per page
+        # Apply filters to the queryset
+        if category:
+            vehicle_list_qs = vehicle_list_qs.filter(category=category)
+        if make:
+            vehicle_list_qs = vehicle_list_qs.filter(vehicle_model__make=make)
+        if keywords:
+            vehicle_list_qs = vehicle_list_qs.filter(
+                Q(vehicle_model__name__icontains=keywords) |
+                Q(description__icontains=keywords) |
+                Q(vehicle_model__make__name__icontains=keywords)
+            ).distinct()
+
+    # Pagination logic (remains the same)
+    paginator = Paginator(vehicle_list_qs, 9)
     page_number = request.GET.get('page')
     try:
         vehicles = paginator.page(page_number)
@@ -34,11 +41,16 @@ def vehicle_list_view(request):
     except EmptyPage:
         vehicles = paginator.page(paginator.num_pages)
 
+    # Preserve filter parameters in pagination links
+    get_params = request.GET.copy()
+    if 'page' in get_params:
+        del get_params['page']
+
     context = {
         'vehicles': vehicles,
-        # 'filter_form': filter_form,
+        'filter_form': filter_form, # Pass the form to the template
+        'get_params_urlencode': get_params.urlencode(),
     }
-    # You will need to create this template: apps/vehicles/templates/vehicles/vehicle_list.html
     return render(request, 'vehicles/vehicle_list.html', context)
 
 
