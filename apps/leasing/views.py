@@ -13,12 +13,10 @@ from apps.vehicles.models import Vehicle
 from .forms import LeaseApplicationForm
 from .models import LeaseApplication, Payment
 from django.core.mail import send_mail # Import send_mail
-from django.template.loader import render_to_string # To render email templates
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.conf import settings
+from apps.core.models import SiteSettings
 
-# --- View 1: Create the Lease Application ---
+
 @login_required
 def create_lease_application(request, vehicle_slug):
     vehicle = get_object_or_404(Vehicle, slug=vehicle_slug, availability_status='Available')
@@ -133,10 +131,7 @@ def initiate_payment(request, application_id):
 
 
 
-
-
-
-# --- REVISE View 3: Verify Payment ---
+# --- REVISED View 3: Verify Payment (with Email Logic) ---
 @login_required
 def verify_payment(request, reference):
     try:
@@ -145,8 +140,9 @@ def verify_payment(request, reference):
         messages.error(request, "Invalid payment reference.")
         return redirect('core:nairaxi_home')
 
-    # If already successful, just redirect to the receipt page to prevent re-processing
+    # If already successful, just redirect to the receipt page. No need to re-process.
     if payment.status == 'Successful':
+        # messages.info(request, "This payment has already been verified.") # Optional: can be removed
         return redirect('leasing:payment_receipt', reference=payment.reference)
 
     url = f'https://api.paystack.co/transaction/verify/{reference}'
@@ -160,9 +156,12 @@ def verify_payment(request, reference):
         if response_data['status'] is True and response_data['data']['status'] == 'success':
             paystack_amount_kobo = response_data['data']['amount']
             if int(payment.amount * 100) == paystack_amount_kobo:
+                
+                # --- START OF LOGIC BLOCK TO CHANGE ---
+                
+                # Update database records first
                 payment.status = 'Successful'
                 payment.paystack_charge_id = response_data['data']['id']
-                # You can parse and save the paid_at timestamp from response_data['data']['paid_at']
                 payment.save()
 
                 lease = payment.lease_application
@@ -173,9 +172,33 @@ def verify_payment(request, reference):
                 vehicle.availability_status = 'Leased'
                 vehicle.save()
                 
-                # Instead of a simple message, we redirect to a detailed receipt page
-                # The receipt page can show its own success message
-                return redirect('leasing:payment_receipt', reference=payment.reference)
+                # Now, attempt to send the receipt email
+                try: # <<< NEW LINE: Wrap email sending in a try...except block
+                    site_settings = SiteSettings.objects.first() # <<< NEW LINE: Get site settings for email template
+
+                    subject = f"Your Payment Receipt from Nairaxi (Ref: {payment.reference})" # <<< NEW LINE
+                    message = render_to_string('leasing/emails/payment_receipt_user.txt', { # <<< NEW LINE
+                        'payment': payment,
+                        'site_settings': site_settings
+                    })
+                    send_mail( # <<< NEW LINE
+                        subject=subject,
+                        message=message,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[payment.email],
+                        fail_silently=False,
+                    )
+                    messages.success(request, "Payment successful! A receipt has been sent to your email.") # <<< NEW LINE: More specific message
+                
+                except Exception as e: # <<< NEW LINE
+                    # If email fails, log it and show a warning, but don't crash.
+                    print(f"Error sending receipt email for payment {payment.reference}: {e}") # <<< NEW LINE
+                    messages.warning(request, "Payment was successful, but we couldn't send the receipt email. You can view your receipt on the website.") # <<< NEW LINE
+
+                # Redirect to the on-screen receipt page REGARDLESS of email success
+                return redirect('leasing:payment_receipt', reference=payment.reference) # <<< This line was already here, but now it's after the email logic
+                
+                # --- END OF LOGIC BLOCK TO CHANGE ---
             else:
                 payment.status = 'Failed'
                 payment.save()
@@ -187,9 +210,11 @@ def verify_payment(request, reference):
             messages.error(request, f"Payment failed: {gateway_response}")
 
     except requests.exceptions.RequestException:
-        messages.error(request, f"Could not connect to payment service. Please try again later.")
+        messages.error(request, f"Could not connect to the payment service. Please try again later.")
     
-    return redirect('leasing:payment_failed') # Redirect to failure page on any error
+    return redirect('leasing:payment_failed')
+
+
 
 
 # --- Optional but Recommended: Webhook View ---

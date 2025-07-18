@@ -1,0 +1,34 @@
+{% load humanize %}
+Subject: Your Payment Receipt for Nairaxi Lease (Ref: {{ payment.reference }})
+
+Hi {{ payment.lease_application.customer.first_name|default:payment.lease_application.customer.username|capfirst }},
+
+This email confirms your successful payment for your vehicle lease. Your lease is now active!
+
+Here are the details for your records:
+
+TRANSACTION SUMMARY
+--------------------
+Receipt Number: {{ payment.reference }}
+Date Paid: {{ payment.created_at|date:"d M, Y, P" }}
+Amount Paid: ₦{{ payment.amount|floatformat:"0"|intcomma }}
+Payment Method: Paystack (Card/Bank)
+Paystack Charge ID: {{ payment.paystack_charge_id }}
+
+LEASE SUMMARY
+--------------------
+Vehicle: {{ payment.lease_application.vehicle }}
+Lease Period: {{ payment.lease_application.start_date|date:"d M, Y" }} to {{ payment.lease_application.end_date|date:"d M, Y" }}
+
+PICKUP INSTRUCTIONS
+--------------------
+You can now pick up your vehicle at our office during operating hours.
+Please present a valid ID and this receipt number.
+
+Location: {{ site_settings.office_address|default:'[Our Office Address]' }}
+Hours: Monday - Friday, 9 AM - 5 PM
+
+Thank you for choosing Nairaxi. We look forward to seeing you.
+
+Best regards,
+The Nairaxi Team

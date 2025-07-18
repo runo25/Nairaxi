@@ -37,7 +37,7 @@ module.exports = {
       
 
       fontFamily: {
-        sans: ['Bonny-Regular', 'sans-serif'],
+        sans: ['sometimes', 'sans-serif'],
         'cabin-sketch': ['"Cabin Sketch"', 'sans-serif'],
         'finger-paint': ['"Finger Paint"', 'sans-serif'],
       },
