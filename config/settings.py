@@ -223,7 +223,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'Nairaxi Leasing <noreply@nairaxi.com>'
 
 # The email address that error messages come from, such as those sent to ADMINS.
-SERVER_EMAIL = 'Nairaxi Server <server-errors@nairaxi.com>'
+SERVER_EMAIL = 'Fleet Server <server-errors@nairaxi.com>'
 
 # A list of all the people who get code error notifications.
 ADMINS = [

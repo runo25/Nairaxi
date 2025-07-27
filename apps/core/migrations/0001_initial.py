@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('linkedin_url', models.URLField(blank=True)),
                 ('color_brand_primary', models.CharField(default='#1993e5', help_text='Primary brand color (e.g., buttons, accents)', max_length=7)),
                 ('color_brand_secondary', models.CharField(default='#111518', help_text='Secondary color (e.g., dark text, headings)', max_length=7)),
-                ('footer_copyright_text', models.CharField(blank=True, default='Nairaxi Car Leasing. All rights reserved.', max_length=200)),
+                ('footer_copyright_text', models.CharField(blank=True, default='Fleet Car Leasing. All rights reserved.', max_length=200)),
             ],
             options={
                 'verbose_name_plural': 'Site Configuration',

@@ -1,42 +1,53 @@
-{# templates/base.html #}
+{# templates/base.html (REFINED) #}
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth"> {# Added scroll-smooth #}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Nairaxi Car Leasing{% endblock title %}</title>
-    <link rel="stylesheet" href="{% url 'core:dynamic_colors_css' %}">
-    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <title>{% block title %}Fleet Car Leasing{% endblock title %}</title>
+    
+    <!-- Custom Font CSS -->
     <link rel="stylesheet" href="{% static 'css/fonts_css/sometimes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts_css/zodiak.css' %}">
+    
+    <!-- Compiled Tailwind CSS -->
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
 
-<style>
-        body { font-family: "sometimes", sans-serif; }
-    </style>
-<!-- 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
+    <style>
+        :root {
+            /* --- COLOR VARIABLES --- */
+            /* These can be overridden by your dynamic_colors_css if you implement it */
+            --color-accent: {{ site_settings.brand_primary_color|default:'#DC2626' }}; /* Default to a bold red */
+            --color-accent-hover: {{ site_settings.brand_secondary_color|default:'#B91C1C' }}; /* Default to a darker red */
+            --color-text-dark: #111827;   /* gray-900 */
+            --color-text-subtle: #6b7280; /* gray-500 */
+            --color-bg-main: #ffffff;    /* white */
+            --color-bg-subtle: #f9fafb;  /* gray-50 */
+            --color-footer-bg: #111827;  /* gray-900 */
         }
-    </script> -->
+    </style>
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
-<body class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden">
-    <div class="layout-container flex h-full grow flex-col">
+<body class="bg-bg-main font-sans text-text-dark antialiased"> {# Set base font and color here #}
+    <div class="layout-container flex h-full min-h-screen flex-col">
 
-        {% include 'partials/navbar_nairaxi.html' %}
+        {% include 'partials/navbar_nairaxi.html' %} {# Renamed from navbar_nairaxi.html #}
 
-        <main class="flex-1">
+        <main class="flex-grow">
             {% block content %}
             <!-- Page-specific content will go here -->
             {% endblock content %}
         </main>
 
-        {% include 'partials/footer_nairaxi.html' %}
+        {% include 'partials/footer_nairaxi.html' %} {# Renamed from footer_nairaxi.html #}
+    </div>
+
+    <!-- GSAP Core & ScrollTrigger Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     {% block extra_js %}{% endblock extra_js %}
 </body>
 </html>

@@ -1,5 +1,5 @@
 {% load humanize %}
-Subject: Your Payment Receipt for Nairaxi Lease (Ref: {{ payment.reference }})
+Subject: Your Payment Receipt for Fleet Lease (Ref: {{ payment.reference }})
 
 Hi {{ payment.lease_application.customer.first_name|default:payment.lease_application.customer.username|capfirst }},
 
@@ -28,7 +28,7 @@ Please present a valid ID and this receipt number.
 Location: {{ site_settings.office_address|default:'[Our Office Address]' }}
 Hours: Monday - Friday, 9 AM - 5 PM
 
-Thank you for choosing Nairaxi. We look forward to seeing you.
+Thank you for choosing Fleet. We look forward to seeing you.
 
 Best regards,
-The Nairaxi Team
+The Fleet Team

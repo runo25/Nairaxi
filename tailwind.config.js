@@ -4,48 +4,32 @@ module.exports = {
   content: [
     './templates/**/*.html',
     './apps/**/templates/**/*.html',
-    './static/src/**/*.js',
-    './node_modules/flowbite/**/*.js'
+    './apps/**/forms.py', // Good to have for form styling
   ],
-  important: true,
   theme: {
-    container: {
-      center: true,
-      padding: '1.5rem',
-    },
     extend: {
-      spacing: {
-        4.5: '1.125rem',
-        15: '3.75rem',
-      },
-      boxShadow: {
-        card: '0 1px 3px rgba(0,0,0,0.12)',
-        button: '0 1px 2px rgba(0,0,0,0.1)',
-      },
-      borderRadius: {
-        xl: '1rem',
-        '2xl': '1.5rem',
-      },
-      // Your theme customizations (colors, fonts)
-      colors: {
-        'nairaxi-blue': 'var(--color-brand-primary)',
-        'nairaxi-dark': 'var(--color-brand-secondary)',
-        'nairaxi-grey-text': '#637988',
-        'nairaxi-grey-bg': '#f0f3f4',
-        'nairaxi-border': '#dce1e5',
-      },
-      
-
+      // Define our font families
       fontFamily: {
-        sans: ['sometimes', 'sans-serif'],
-        'cabin-sketch': ['"Cabin Sketch"', 'sans-serif'],
-        'finger-paint': ['"Finger Paint"', 'sans-serif'],
+        // Zodiak will be our 'serif' font, used for headings (CORRECTED)
+        serif: ['sometimes', 'serif'],
+        // 'sometimes' will be our default 'sans' font, used for body text (CORRECTED)
+        sans: ['Zodiak-Regular', 'Georgia', 'serif'],
       },
-
+      // Define our custom color names that use CSS variables
+      colors: {
+        'accent': 'var(--color-accent)',
+        'accent-hover': 'var(--color-accent-hover)',
+        'text-dark': 'var(--color-text-dark)',
+        'text-subtle': 'var(--color-text-subtle)',
+        'bg-main': 'var(--color-bg-main)',
+        'bg-subtle': 'var(--color-bg-subtle)',
+        'footer-bg': 'var(--color-footer-bg, #111827)', // Added a footer bg color with fallback
+      },
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
-    // require('@tailwindcss/container-queries'), // if you installed and plan to use it
+    require('@tailwindcss/aspect-ratio'), // For the redesigned vehicle card
+    require('@tailwindcss/line-clamp'),  // For the redesigned vehicle card
   ],
 }

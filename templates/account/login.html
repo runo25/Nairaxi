@@ -6,9 +6,9 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-bg-subtle flex flex-col justify-center py-12 sm:px-6 lg:px-8"> {# UPDATED #}
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-text-dark"> {# UPDATED #}
             {% trans "Sign In to Your Account" %}
         </h2>
     </div>
@@ -37,21 +37,21 @@
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-accent focus:ring-accent border-gray-300 rounded"> {# UPDATED #}
                         <label for="remember" class="ml-2 block text-sm text-gray-900">
                             {% trans "Remember me" %}
                         </label>
                     </div>
 
                     <div class="text-sm">
-                        <a href="{% url 'account_reset_password' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                        <a href="{% url 'account_reset_password' %}" class="font-medium text-accent hover:text-accent-hover"> {# UPDATED #}
                             {% trans "Forgot your password?" %}
                         </a>
                     </div>
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"> {# UPDATED #}
                         {% trans "Sign In" %}
                     </button>
                 </div>
@@ -63,7 +63,7 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">
+                        <span class="px-2 bg-white text-text-subtle"> {# UPDATED #}
                             {% trans "Or continue with" %}
                         </span>
                     </div>
@@ -71,7 +71,7 @@
 
                 <div class="mt-6">
                     {% provider_login_url 'google' as google_url %}
-                    <a href="{{ google_url }}" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <a href="{{ google_url }}" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"> {# UPDATED #}
                         <img class="h-5 w-5 mr-2" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo">
                         {% trans "Sign in with Google" %}
                     </a>
@@ -79,9 +79,9 @@
             </div>
 
             <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-text-subtle"> {# UPDATED #}
                     {% trans "Don't have an account?" %}
-                    <a href="{% url 'account_signup' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="{% url 'account_signup' %}" class="font-medium text-accent hover:text-accent-hover"> {# UPDATED #}
                         {% trans "Sign up" %}
                     </a>
                 </p>

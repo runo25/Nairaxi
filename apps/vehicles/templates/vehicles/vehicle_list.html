@@ -1,91 +1,93 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Our Vehicle Fleet - Nairaxi{% endblock title %}
+{% block title %}Our Vehicle Fleet {% endblock title %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-        <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">Available Vehicles</h1>
-        <p class="mt-3 max-w-2xl mx-auto text-lg text-nairaxi-grey-text">Browse our collection and find the perfect car for your needs.</p>
-    </div>
-    
-    <!-- Filter Section -->
-    <div class="mb-12 p-6 bg-white rounded-xl shadow-lg border border-gray-200" data-aos="fade-up">
-        <form method="get" action="{% url 'vehicles:vehicle_list' %}" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <div>
-                    <label for="{{ filter_form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">Category</label>
-                    {{ filter_form.category }}
-                </div>
-
-                <div>
-                    <label for="{{ filter_form.make.id_for_label }}" class="block text-sm font-medium text-gray-700">Make / Brand</label>
-                    {{ filter_form.make }}
-                </div>
-
-                {# This is your existing search bar input, integrated into the form #}
-                <div>
-                    <label for="id_keywords" class="block text-sm font-medium text-gray-700">Keyword Search</label>
-                    <input type="text" name="keywords" value="{{ request.GET.keywords|default:'' }}" placeholder="e.g., Camry, leather seats" id="id_keywords" 
-                           class="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-nairaxi-blue focus:border-nairaxi-blue">
-                </div>
-            </div>
-            <div class="pt-5 mt-4 border-t border-gray-200">
-                <div class="flex justify-end space-x-3">
-                    <a href="{% url 'vehicles:vehicle_list' %}" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                       Clear
-                   </a>
-                   <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-nairaxi-blue hover:bg-blue-700">
-                       Apply Filters
-                   </button>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-    {% if vehicles %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-            {% for vehicle_obj in vehicles %}
-                {% include 'partials/vehicle_card_nairaxi_redesigned.html' with vehicle=vehicle_obj forloop_counter0=forloop.counter0 %}
-            {% endfor %}
+<div class="bg-bg-subtle min-h-screen"> {# Added background for consistency #}
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-extrabold text-text-dark sm:text-4xl">Available Vehicles</h1> {# UPDATED #}
+            <p class="mt-3 max-w-2xl mx-auto text-lg text-text-subtle">Browse our collection and find the perfect car for your needs.</p> {# UPDATED #}
         </div>
-
-        <!-- Pagination -->
-        {% if vehicles.has_other_pages %}
-            <nav class="mt-16 flex items-center justify-between border-t border-gray-200 pt-8" aria-label="Pagination">
-                <div class="flex flex-1 justify-between sm:justify-center">
-                    {% if vehicles.has_previous %}
-                        <a href="?page={{ vehicles.previous_page_number }}&{{ get_params_urlencode }}"
-                        class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-                            Previous
-                        </a>
-                    {% endif %}
-                    <div class="hidden sm:flex sm:items-baseline sm:space-x-4 mx-4">
-                        <p class="text-sm text-gray-700">
-                            Page <span class="font-medium">{{ vehicles.number }}</span> of <span class="font-medium">{{ vehicles.paginator.num_pages }}</span>
-                        </p>
+        
+        <!-- Filter Section -->
+        <div class="mb-12 p-6 bg-white rounded-xl shadow-lg border border-gray-200" data-aos="fade-up">
+            <form method="get" action="{% url 'vehicles:vehicle_list' %}" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <div>
+                        <label for="{{ filter_form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">Category</label>
+                        {{ filter_form.category }}
                     </div>
-                    {% if vehicles.has_next %}
-                        <a href="?page={{ vehicles.next_page_number }}&{{ get_params_urlencode }}"
-                        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-                            Next
-                        </a>
-                    {% endif %}
+
+                    <div>
+                        <label for="{{ filter_form.make.id_for_label }}" class="block text-sm font-medium text-gray-700">Make / Brand</label>
+                        {{ filter_form.make }}
+                    </div>
+
+                    {# This is your existing search bar input, integrated into the form #}
+                    <div>
+                        <label for="id_keywords" class="block text-sm font-medium text-gray-700">Keyword Search</label>
+                        <input type="text" name="keywords" value="{{ request.GET.keywords|default:'' }}" placeholder="e.g., Camry, leather seats" id="id_keywords" 
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"> {# UPDATED #}
+                    </div>
                 </div>
-            </nav>
-        {% endif %}
-    {% else %}
-        <div class="text-center py-12">
-            <h3 class="mt-2 text-xl font-medium text-nairaxi-dark">No Vehicles Found</h3>
-            <p class="mt-1 text-gray-500">No vehicles match your current search or filter criteria.</p>
-            <div class="mt-6">
-                <a href="{% url 'vehicles:vehicle_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-nairaxi-blue hover:bg-blue-700">
-                    Clear Filters and View All
-                </a>
-            </div>
+                <div class="pt-5 mt-4 border-t border-gray-200">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{% url 'vehicles:vehicle_list' %}" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                           Clear
+                       </a>
+                       <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-accent hover:bg-accent-hover"> {# UPDATED #}
+                           Apply Filters
+                       </button>
+                    </div>
+                </div>
+            </form>
         </div>
-    {% endif %}
+        
+        {% if vehicles %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                {% for vehicle_obj in vehicles %}
+                    {% include 'partials/vehicle_card_nairaxi_redesigned.html' with vehicle=vehicle_obj forloop_counter0=forloop.counter0 %}
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if vehicles.has_other_pages %}
+                <nav class="mt-16 flex items-center justify-between border-t border-gray-200 pt-8" aria-label="Pagination">
+                    <div class="flex flex-1 justify-between sm:justify-center">
+                        {% if vehicles.has_previous %}
+                            <a href="?page={{ vehicles.previous_page_number }}&{{ get_params_urlencode }}"
+                            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                Previous
+                            </a>
+                        {% endif %}
+                        <div class="hidden sm:flex sm:items-baseline sm:space-x-4 mx-4">
+                            <p class="text-sm text-gray-700">
+                                Page <span class="font-medium">{{ vehicles.number }}</span> of <span class="font-medium">{{ vehicles.paginator.num_pages }}</span>
+                            </p>
+                        </div>
+                        {% if vehicles.has_next %}
+                            <a href="?page={{ vehicles.next_page_number }}&{{ get_params_urlencode }}"
+                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                Next
+                            </a>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-12">
+                <h3 class="mt-2 text-xl font-medium text-text-dark">No Vehicles Found</h3> {# UPDATED #}
+                <p class="mt-1 text-text-subtle">No vehicles match your current search or filter criteria.</p> {# UPDATED #}
+                <div class="mt-6">
+                    <a href="{% url 'vehicles:vehicle_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-accent hover:bg-accent-hover"> {# UPDATED #}
+                        Clear Filters and View All
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock content %}

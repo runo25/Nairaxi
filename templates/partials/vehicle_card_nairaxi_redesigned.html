@@ -10,16 +10,7 @@
      data-aos-delay="{{ forloop_counter0|default:0|add:'0'|stringformat:'s' }}00">
     
     <!-- === IMAGE CONTAINER (The Key to the Solution) === -->
-    <!--
-      - 'relative': Establishes a positioning context for the absolute image inside.
-      - 'pt-[56.25%]': This is the magic. It's a padding-top of 56.25% OF THE WIDTH.
-        This creates a perfect 16:9 aspect ratio container.
-        (For a 4:3 ratio, you'd use pt-[75%]. For a square 1:1, pt-[100%]).
-    -->
     <a href="{{ vehicle.get_absolute_url }}" class="block relative w-full pt-[56.25%] bg-gray-100">
-        <!--
-          - The Image itself is now positioned absolutely to fill the container created by the padding trick.
-        -->
         {% if vehicle.main_image %}
             <img src="{{ vehicle.main_image.url }}" alt="{{ vehicle.vehicle_model }}" class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
         {% else %}
@@ -28,35 +19,31 @@
     </a>
 
     <!-- === TEXT CONTENT BLOCK === -->
-    <!--
-      - This block simply flows naturally after the image container.
-      - We use flexbox internally to push the CTA to the bottom.
-    -->
     <div class="flex flex-col flex-grow p-5">
         <!-- This div grows to fill available space -->
         <div class="flex-grow">
             {% if vehicle.category %}
-                <span class="inline-block bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">{{ vehicle.category.name }}</span>
+                <span class="inline-block bg-bg-subtle text-text-subtle text-xs font-semibold px-2.5 py-1 rounded-full mb-2">{{ vehicle.category.name }}</span> {# UPDATED: for consistency #}
             {% endif %}
 
             <a href="{{ vehicle.get_absolute_url }}" class="block">
-                <h3 class="text-gray-800 text-xl font-bold leading-tight truncate transition-colors group-hover:text-nairaxi-blue">
+                <h3 class="text-text-dark text-xl font-bold leading-tight truncate transition-colors group-hover:text-accent"> {# UPDATED #}
                     {{ vehicle.vehicle_model }} ({{ vehicle.year }})
                 </h3>
             </a>
 
-            <p class="text-gray-500 text-sm leading-relaxed mt-2 line-clamp-2">
+            <p class="text-text-subtle text-sm leading-relaxed mt-2 line-clamp-2"> {# UPDATED #}
                 {{ vehicle.description|truncatewords:12 }}
             </p>
         </div>
         
         <!-- This div stays at the bottom -->
         <div class="mt-6 flex justify-between items-center">
-            <p class="text-nairaxi-dark text-lg font-bold">
-                ₦{{ vehicle.daily_rate_ngn|floatformat:"0" }}<span class="text-sm font-medium text-gray-500">/day</span>
+            <p class="text-text-dark text-lg font-bold"> {# UPDATED #}
+                ₦{{ vehicle.daily_rate_ngn|floatformat:"0" }}<span class="text-sm font-medium text-text-subtle">/day</span> {# UPDATED #}
             </p>
             
-            <a href="{{ vehicle.get_absolute_url }}" class="bg-nairaxi-blue text-white text-center py-2 px-5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 active:scale-95">
+            <a href="{{ vehicle.get_absolute_url }}" class="bg-accent text-white text-center py-2 px-5 rounded-lg text-sm font-semibold hover:bg-accent-hover transition-all duration-300 transform hover:scale-105 active:scale-95"> {# UPDATED #}
                 Lease Now
             </a>
         </div>

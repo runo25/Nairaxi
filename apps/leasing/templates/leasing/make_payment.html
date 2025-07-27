@@ -5,46 +5,46 @@
 {% block title %}Complete Payment for {{ payment.lease_application.vehicle }}{% endblock title %}
 
 {% block content %}
-<div class="bg-nairaxi-grey-bg py-16 sm:py-24">
+<div class="bg-bg-subtle py-16 sm:py-24"> {# UPDATED #}
     <div class="max-w-2xl mx-auto px-4">
         
         <div class="text-center">
-            <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">Complete Your Payment</h1>
-            <p class="mt-4 text-lg text-nairaxi-grey-text">You're about to complete the payment for the lease of the <span class="font-semibold text-nairaxi-blue">{{ payment.lease_application.vehicle }}</span>.</p>
+            <h1 class="text-3xl font-extrabold text-text-dark sm:text-4xl">Complete Your Payment</h1> {# UPDATED #}
+            <p class="mt-4 text-lg text-text-subtle">You're about to complete the payment for the lease of the <span class="font-semibold text-accent">{{ payment.lease_application.vehicle }}</span>.</p> {# UPDATED #}
         </div>
 
         <div class="mt-10 p-6 sm:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
-            <h2 class="text-xl font-semibold text-nairaxi-dark mb-6 border-b pb-4">Payment Summary</h2>
+            <h2 class="text-xl font-semibold text-text-dark mb-6 border-b pb-4">Payment Summary</h2> {# UPDATED #}
             <dl class="space-y-4">
                 <div class="flex justify-between items-center">
-                    <dt class="text-sm text-nairaxi-grey-text">Leased Vehicle:</dt>
-                    <dd class="text-sm font-semibold text-nairaxi-dark">{{ payment.lease_application.vehicle }}</dd>
+                    <dt class="text-sm text-text-subtle">Leased Vehicle:</dt> {# UPDATED #}
+                    <dd class="text-sm font-semibold text-text-dark">{{ payment.lease_application.vehicle }}</dd> {# UPDATED #}
                 </div>
                 <div class="flex justify-between items-center">
-                    <dt class="text-sm text-nairaxi-grey-text">Your Email:</dt>
-                    <dd class="text-sm font-semibold text-nairaxi-dark">{{ payment.email }}</dd>
+                    <dt class="text-sm text-text-subtle">Your Email:</dt> {# UPDATED #}
+                    <dd class="text-sm font-semibold text-text-dark">{{ payment.email }}</dd> {# UPDATED #}
                 </div>
                  <div class="flex justify-between items-center">
-                    <dt class="text-sm text-nairaxi-grey-text">Payment Reference:</dt>
-                    <dd class="font-mono text-xs text-nairaxi-grey-text bg-nairaxi-grey-bg px-2 py-1 rounded">{{ payment.reference }}</dd>
+                    <dt class="text-sm text-text-subtle">Payment Reference:</dt> {# UPDATED #}
+                    <dd class="font-mono text-xs text-text-subtle bg-bg-subtle px-2 py-1 rounded">{{ payment.reference }}</dd> {# UPDATED #}
                 </div>
                 <div class="flex justify-between items-center border-t pt-4 mt-4">
-                    <dt class="text-base font-bold text-nairaxi-dark">Total Amount Due:</dt>
-                    <dd class="text-2xl font-bold text-nairaxi-blue">₦{{ payment.amount|floatformat:"0"|intcomma }}</dd> {# e.g., 1,500,000 #}
+                    <dt class="text-base font-bold text-text-dark">Total Amount Due:</dt> {# UPDATED #}
+                    <dd class="text-2xl font-bold text-accent">₦{{ payment.amount|floatformat:"0"|intcomma }}</dd> {# UPDATED #}
                 </div>
             </dl>
         </div>
 
         <div class="mt-10">
             <button onclick="payWithPaystack()" 
-                    class="w-full flex items-center justify-center bg-nairaxi-blue text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    class="w-full flex items-center justify-center bg-accent text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-accent-hover transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"> {# UPDATED #}
                 <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
                 Pay Securely with Paystack
             </button>
         </div>
-        <p class="mt-4 text-center text-xs text-nairaxi-grey-text">You will be redirected to Paystack's secure checkout page.</p>
+        <p class="mt-4 text-center text-xs text-text-subtle">You will be redirected to Paystack's secure checkout page.</p> {# UPDATED #}
 
     </div>
 </div>

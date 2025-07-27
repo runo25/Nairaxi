@@ -23,7 +23,7 @@ def approve_and_notify(modeladmin, request, queryset):
                 payment_url = request.build_absolute_uri(
                     reverse('leasing:initiate_payment', args=(application.id,))
                 )
-                subject = f"Your Nairaxi Lease Application for {application.vehicle} has been Approved!"
+                subject = f"Your Fleet Lease Application for {application.vehicle} has been Approved!"
                 message = render_to_string('leasing/emails/application_approved_user.txt', {
                     'user': application.customer,
                     'application': application,

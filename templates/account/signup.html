@@ -6,17 +6,25 @@
 {% block head_title %}{% trans "Sign Up" %}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-bg-subtle flex flex-col justify-center py-12 sm:px-6 lg:px-8"> {# UPDATED #}
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-text-dark"> {# UPDATED #}
             {% trans "Sign Up" %}
         </h2>
+        {% if sociallogin %}
+        <p class="mt-2 text-center text-sm text-text-subtle"> {# UPDATED #}
+            {% blocktrans with provider_name=sociallogin.account.get_provider.name site_name=site.name %}You are about to use your {{ provider_name }} account to sign up for an account on {{ site_name }}. As a final step, please complete the following form:{% endblocktrans %}
+        </p>
+        {% endif %}
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {% url 'account_signup' as signup_url %}
-            <form class="space-y-6" method="POST" action="{{ signup_url }}">
+            {% if sociallogin %}
+            <form class="space-y-6" method="POST" action="{% url 'socialaccount_signup' %}">
+            {% else %}
+            <form class="space-y-6" method="POST" action="{% url 'account_signup' %}">
+            {% endif %}
                 {% csrf_token %}
 
                 {% for field in form %}
@@ -36,19 +44,20 @@
                 {% endif %}
 
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"> {# UPDATED #}
                         {% trans "Sign Up" %}
                     </button>
                 </div>
             </form>
 
+            {% if not sociallogin %}
             <div class="mt-6">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">
+                        <span class="px-2 bg-white text-text-subtle"> {# UPDATED #}
                             Or continue with
                         </span>
                     </div>
@@ -56,7 +65,7 @@
 
                 <div class="mt-6 grid grid-cols-1 gap-3">
                     {% provider_login_url 'google' as google_url %}
-                    <a href="{{ google_url }}" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <a href="{{ google_url }}" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"> {# UPDATED #}
                         <img class="h-5 w-5 mr-2" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo">
                         {% trans "Sign in with Google" %}
                     </a>
@@ -64,13 +73,14 @@
             </div>
 
             <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-text-subtle"> {# UPDATED #}
                     Already have an account? 
-                    <a href="{% url 'account_login' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="{% url 'account_login' %}" class="font-medium text-accent hover:text-accent-hover"> {# UPDATED #}
                         Sign in
                     </a>
                 </p>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

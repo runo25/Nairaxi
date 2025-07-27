@@ -28,7 +28,7 @@ class SiteSettings(models.Model):
     # Add more color fields as needed, e.g., color_accent, color_background, etc.
 
     # --- Legal & Footer ---
-    footer_copyright_text = models.CharField(max_length=200, blank=True, default="Nairaxi Car Leasing. All rights reserved.")
+    footer_copyright_text = models.CharField(max_length=200, blank=True, default="Fleet Car Leasing. All rights reserved.")
 
     def __str__(self):
         return "Site Configuration"

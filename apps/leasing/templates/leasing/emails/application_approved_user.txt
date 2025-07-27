@@ -18,4 +18,4 @@ Complete Payment Now: {{ payment_url }}
 If you have any questions, please don't hesitate to contact us.
 
 Best regards,
-The Nairaxi Team
+The Fleet Team

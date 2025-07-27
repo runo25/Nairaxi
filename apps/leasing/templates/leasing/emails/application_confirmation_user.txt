@@ -1,6 +1,6 @@
 Hi {{ user.username|capfirst }},
 
-Thank you for your lease application with Nairaxi!
+Thank you for your lease application with Fleet!
 
 We have successfully received your application for the {{ application.vehicle }}. Our team will review your submission and get back to you shortly.
 
@@ -12,7 +12,7 @@ Vehicle: {{ application.vehicle }}
 Lease Period: {{ application.start_date|date:"d M, Y" }} to {{ application.end_date|date:"d M, Y" }}
 Application ID: {{ application.id }}
 
-Thank you for choosing Nairaxi.
+Thank you for choosing Fleet.
 
 Best regards,
-The Nairaxi Team
+The Fleet Team

@@ -2,10 +2,10 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Application Submitted - Nairaxi{% endblock title %}
+{% block title %}Application Submitted - Fleet{% endblock title %}
 
 {% block content %}
-<div class="bg-nairaxi-grey-bg">
+<div class="bg-bg-subtle"> {# UPDATED #}
     <div class="max-w-3xl mx-auto text-center py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         
         <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
@@ -14,26 +14,26 @@
             </svg>
         </div>
 
-        <h1 class="text-3xl font-extrabold text-nairaxi-dark sm:text-4xl">
+        <h1 class="text-3xl font-extrabold text-text-dark sm:text-4xl"> {# UPDATED #}
             Application Submitted!
         </h1>
 
-        <p class="mt-4 text-lg text-nairaxi-grey-text leading-relaxed">
-            Thank you, <span class="font-semibold">{{ application.customer.username|capfirst }}</span>. Your lease application for the <span class="font-semibold text-nairaxi-blue">{{ application.vehicle }}</span> has been received.
+        <p class="mt-4 text-lg text-text-subtle leading-relaxed"> {# UPDATED #}
+            Thank you, <span class="font-semibold">{{ application.customer.username|capfirst }}</span>. Your lease application for the <span class="font-semibold text-accent">{{ application.vehicle }}</span> has been received. {# UPDATED #}
         </p>
 
-        <div class="mt-8 text-center p-6 bg-blue-50 border border-nairaxi-blue rounded-lg">
-            <h2 class="font-semibold text-nairaxi-dark">What Happens Next?</h2>
-            <p class="mt-2 text-sm text-nairaxi-grey-text">
+        <div class="mt-8 text-center p-6 bg-accent/10 border border-accent/20 rounded-lg"> {# UPDATED #}
+            <h2 class="font-semibold text-text-dark">What Happens Next?</h2> {# UPDATED #}
+            <p class="mt-2 text-sm text-text-subtle"> {# UPDATED #}
                 Please allow up to **45-60 minutes** for our team to review your documents and application. You will receive an email notification once your application is approved. You can also check its status on your dashboard.
             </p>
         </div>
         
         <div class="mt-10 flex justify-center gap-x-6">
-            <a href=" {% url 'account_dashboard' %}" class="rounded-md bg-nairaxi-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nairaxi-blue transition-colors">
+            <a href=" {% url 'account_dashboard' %}" class="rounded-md bg-accent px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors"> {# UPDATED #}
                 Go to My Dashboard
             </a>
-            <a href="{% url 'core:nairaxi_home' %}" class="text-sm font-semibold leading-6 text-nairaxi-dark group">
+            <a href="{% url 'core:nairaxi_home' %}" class="text-sm font-semibold leading-6 text-text-dark group"> {# UPDATED #}
                 Back to Homepage <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
             </a>
         </div>

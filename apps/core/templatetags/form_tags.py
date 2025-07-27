@@ -12,7 +12,7 @@ def render_field(field, **kwargs):
 def as_field_group(field):
     """ Renders a form field with its label and errors in a div. """
     return field.as_widget(attrs={
-        'class': 'block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-nairaxi-blue focus:border-nairaxi-blue',
+        'class': 'block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent',
         'placeholder': field.label
     })
 

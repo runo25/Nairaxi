@@ -32,7 +32,7 @@ def create_lease_application(request, vehicle_slug):
             # --- START OF NEW EMAIL LOGIC ---
             try:
                 # --- Email to User ---
-                user_subject = f"Your Nairaxi Lease Application for {vehicle} has been received"
+                user_subject = f"Your Fleet Lease Application for {vehicle} has been received"
                 user_message = render_to_string('leasing/emails/application_confirmation_user.txt', {
                     'user': request.user,
                     'application': application,
@@ -176,7 +176,7 @@ def verify_payment(request, reference):
                 try: # <<< NEW LINE: Wrap email sending in a try...except block
                     site_settings = SiteSettings.objects.first() # <<< NEW LINE: Get site settings for email template
 
-                    subject = f"Your Payment Receipt from Nairaxi (Ref: {payment.reference})" # <<< NEW LINE
+                    subject = f"Your Payment Receipt from Fleet (Ref: {payment.reference})" # <<< NEW LINE
                     message = render_to_string('leasing/emails/payment_receipt_user.txt', { # <<< NEW LINE
                         'payment': payment,
                         'site_settings': site_settings
