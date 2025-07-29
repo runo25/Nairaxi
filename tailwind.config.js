@@ -13,7 +13,7 @@ module.exports = {
         // Zodiak will be our 'serif' font, used for headings (CORRECTED)
         serif: ['sometimes', 'serif'],
         // 'sometimes' will be our default 'sans' font, used for body text (CORRECTED)
-        sans: ['Zodiak-Regular', 'Georgia', 'serif'],
+        sans: ['serif'],//'Zodiak-Regular',
       },
       // Define our custom color names that use CSS variables
       colors: {

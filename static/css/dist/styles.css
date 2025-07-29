@@ -46,7 +46,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: Zodiak-Regular, Georgia, serif;
+  font-family: serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -1664,7 +1664,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .font-sans {
-  font-family: Zodiak-Regular, Georgia, serif;
+  font-family: serif;
 }
 
 .font-serif {
