@@ -4,6 +4,7 @@ import requests  # For making API calls to Paystack
 import json      # For handling webhook data
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
@@ -265,3 +266,59 @@ def payment_receipt_view(request, reference):
 # --- View 5: payment_failed remains the same ---
 def payment_failed(request):
     return render(request, 'leasing/payment_failed.html')
+
+
+# --- Staff-facing views ---
+
+@staff_member_required
+def staff_lease_list(request):
+    applications = LeaseApplication.objects.all()
+    context = {
+        'applications': applications,
+    }
+    return render(request, 'leasing/staff/lease_list.html', context)
+
+@staff_member_required
+def staff_lease_detail(request, application_id):
+    application = get_object_or_404(LeaseApplication, pk=application_id)
+    context = {
+        'application': application,
+    }
+    return render(request, 'leasing/staff/lease_detail.html', context)
+
+@staff_member_required
+def staff_update_lease_status(request, application_id, status):
+    application = get_object_or_404(LeaseApplication, pk=application_id)
+    if status in ['Approved', 'Rejected']:
+        application.status = status
+        application.save()
+        messages.success(request, f"Application status updated to {status}.")
+
+        # Send email to user
+        if status == 'Approved':
+            subject = "Your Lease Application has been Approved"
+            template = 'leasing/emails/application_approved_user.txt'
+        else:
+            subject = "Update on Your Lease Application"
+            template = 'leasing/emails/application_rejected_user.txt'
+
+        try:
+            user_message = render_to_string(template, {
+                'user': application.customer,
+                'application': application,
+            })
+            send_mail(
+                subject=subject,
+                message=user_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[application.customer.email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Error sending status update email: {e}")
+            messages.warning(request, "The application status was updated, but there was an issue sending the notification email.")
+
+    else:
+        messages.error(request, "Invalid status.")
+    
+    return redirect('leasing:leasing_staff:staff_lease_detail', application_id=application.id)

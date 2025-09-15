@@ -1,0 +1,9 @@
+Hello {{ user.get_full_name|default:user.username }},
+
+We are writing to inform you about an update on your lease application for the {{ application.vehicle }}.
+
+After careful review, we regret to inform you that your application has been rejected at this time.
+
+If you have any questions, please contact our support team.
+
+Thank you for your interest in Nairaxi Leasing.

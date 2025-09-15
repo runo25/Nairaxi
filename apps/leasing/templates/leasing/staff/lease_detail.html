@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Application #{{ application.id }} - Staff Dashboard{% endblock title %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+        <!-- Breadcrumbs -->
+        <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="{% url 'core:nairaxi_home' %}" class="text-gray-500 hover:text-gray-700">Home</a>
+                </li>
+                <li>
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" /></svg>
+                </li>
+                <li>
+                    <a href="{% url 'leasing:leasing_staff:staff_lease_list' %}" class="text-gray-500 hover:text-gray-700">Lease Applications</a>
+                </li>
+                <li>
+                    <svg class="h-5 w-5 flex-shrink-0 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" /></svg>
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">Application #{{ application.id }}</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+
+            <!-- Left Column: Main Details -->
+            <div class="lg:col-span-2 space-y-8">
+
+                <!-- Customer & Vehicle Info -->
+                <div class="bg-white shadow-xl rounded-lg border border-gray-200">
+                    <div class="px-8 py-6 border-b border-gray-200">
+                        <h2 class="text-2xl font-bold text-gray-900">Application Details</h2>
+                    </div>
+                    <div class="px-8 py-8">
+                        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Customer</dt>
+                                <dd class="mt-2 text-lg text-gray-900 font-semibold">{{ application.customer.get_full_name|default:application.customer.email }}</dd>
+                                <dd class="mt-1 text-base text-gray-500">{{ application.customer.email }}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Vehicle</dt>
+                                <dd class="mt-2 text-lg text-gray-900 font-semibold">{{ application.vehicle.make }} {{ application.vehicle.model }} ({{ application.vehicle.year }})</dd>
+                                <dd class="mt-1 text-base text-gray-500">Monthly Rate: ₦{{ application.vehicle.monthly_rate_ngn|floatformat:2 }}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Lease Period</dt>
+                                <dd class="mt-2 text-lg text-gray-900">{{ application.start_date|date:"d M Y" }} - {{ application.end_date|date:"d M Y" }}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Application Date</dt>
+                                <dd class="mt-2 text-lg text-gray-900">{{ application.application_date|date:"d M Y" }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Documents -->
+                <div class="bg-white shadow-xl rounded-lg border border-gray-200">
+                    <div class="px-8 py-6 border-b border-gray-200">
+                        <h2 class="text-2xl font-bold text-gray-900">Submitted Documents</h2>
+                    </div>
+                    <div class="px-8 py-8">
+                        <ul class="space-y-5">
+                            <li>
+                                <a href="{{ application.drivers_license.url }}" target="_blank" class="flex items-center text-accent hover:text-accent-hover font-semibold text-lg">
+                                    <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    View Driver's License
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ application.identification_document.url }}" target="_blank" class="flex items-center text-accent hover:text-accent-hover font-semibold text-lg">
+                                    <svg class="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    View Identification Document
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Status & Actions -->
+            <div class="lg:col-span-1 space-y-8 mt-8 lg:mt-0">
+                <div class="bg-white shadow-xl rounded-lg border border-gray-200">
+                    <div class="px-6 py-5 border-b border-gray-200">
+                        <h2 class="text-2xl font-bold text-gray-900">Status & Actions</h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="text-center">
+                            <dt class="text-base font-medium text-gray-500 mb-2">Current Status</dt>
+                            {% if application.status == 'Pending' %}
+                                <span class="inline-flex items-center px-4 py-1.5 text-base font-bold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending Review
+                                </span>
+                            {% elif application.status == 'Approved' %}
+                                <span class="inline-flex items-center px-4 py-1.5 text-base font-bold rounded-full bg-green-100 text-green-800">
+                                    Approved
+                                </span>
+                            {% elif application.status == 'Active' %}
+                                <span class="inline-flex items-center px-4 py-1.5 text-base font-bold rounded-full bg-blue-100 text-blue-800">
+                                    Lease Active
+                                </span>
+                            {% elif application.status == 'Rejected' %}
+                                <span class="inline-flex items-center px-4 py-1.5 text-base font-bold rounded-full bg-red-100 text-red-800">
+                                    Rejected
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-4 py-1.5 text-base font-bold rounded-full bg-gray-100 text-gray-800">
+                                    {{ application.get_status_display }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        {% if application.status == 'Pending' %}
+                        <div class="pt-6 border-t border-gray-200">
+                            <p class="text-base text-center text-gray-600 mb-4">Update the application status below.</p>
+                            <div class="grid grid-cols-1 gap-4">
+                                <a href="{% url 'leasing:leasing_staff:staff_update_lease_status' application.id 'Approved' %}" class="w-full flex justify-center bg-accent hover:bg-accent-hover text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform hover:scale-105">
+                                    Approve
+                                </a>
+                                <a href="{% url 'leasing:leasing_staff:staff_update_lease_status' application.id 'Rejected' %}" class="w-full flex justify-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg shadow-md transition-transform hover:scale-105">
+                                    Reject
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

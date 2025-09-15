@@ -1,5 +1,5 @@
 # apps/leasing/urls.py
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'leasing'
@@ -22,4 +22,7 @@ urlpatterns = [
 
     # Optional but recommended: The webhook URL for server-to-server updates
     path('webhook/paystack/', views.paystack_webhook, name='paystack_webhook'),
+
+    # Staff-facing URLs
+    path('staff/', include('apps.leasing.staff_urls', namespace='leasing_staff')),
 ]

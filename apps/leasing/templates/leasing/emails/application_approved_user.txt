@@ -1,21 +1,9 @@
-{% load humanize %}
-Hi {{ user.first_name|default:user.username|capfirst }},
+Hello {{ user.get_full_name|default:user.username }},
 
 Great news! Your lease application for the {{ application.vehicle }} has been approved.
 
-You can now proceed with the payment to activate your lease and finalize the booking.
+You can now proceed to make the initial payment to activate your lease.
 
-Application Details:
---------------------
-Vehicle: {{ application.vehicle }}
-Lease Period: {{ application.start_date|date:"d M, Y" }} to {{ application.end_date|date:"d M, Y" }}
-Initial Payment Due: ₦{{ application.initial_payment_due|floatformat:"0"|intcomma }}
+Please log in to your account to continue.
 
-Please click the link below to complete your payment securely.
-
-Complete Payment Now: {{ payment_url }}
-
-If you have any questions, please don't hesitate to contact us.
-
-Best regards,
-The Fleet Team
+Thank you for choosing Nairaxi Leasing.

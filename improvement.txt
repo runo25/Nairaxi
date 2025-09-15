@@ -1,0 +1,43 @@
+# Nairaxi Leasing Project - Improvement Suggestions
+
+This document outlines potential improvements for the Nairaxi Leasing project.
+
+## 1. Staff-Facing Lease Management Dashboard
+
+A dedicated dashboard for staff to manage lease applications would significantly improve the workflow. Currently, staff has to use the Django admin interface, which is functional but not as user-friendly as a dedicated interface could be.
+
+### 1.1. Features
+
+*   **Lease Application List View:**
+    *   A paginated and searchable table of all lease applications.
+    *   Columns for Customer, Vehicle, Application Date, and Status.
+    *   Filtering by status (Pending, Approved, Rejected, etc.).
+    *   The view should be restricted to staff members only.
+
+*   **Lease Application Detail View:**
+    *   A detailed view of a single application.
+    *   Display all application fields, including customer information and vehicle details.
+    *   Links to view the uploaded documents (Driver's License and Identification Document).
+    *   Buttons to "Approve" or "Reject" the application.
+        *   Clicking "Approve" would change the application status to 'Approved' and trigger an email notification to the user that their application has been approved and they can now make a payment.
+        *   Clicking "Reject" would change the status to 'Rejected' and trigger an email to the user explaining the rejection.
+
+### 1.2. Implementation Plan
+
+1.  **Create a new app or a dedicated section in the `leasing` app for staff views.**
+2.  **URLs:** Create new URL patterns under a `/staff/` prefix (e.g., `/staff/leasing/`, `/staff/leasing/<int:application_id>/`).
+3.  **Views:**
+    *   `LeaseApplicationListView`: A `ListView` with filtering capabilities.
+    *   `LeaseApplicationDetailView`: A `DetailView` to display application details.
+    *   `UpdateLeaseApplicationStatusView`: A view to handle the approval/rejection logic.
+4.  **Templates:** Create new templates for the list and detail views.
+5.  **Authentication:** Use the `@staff_member_required` decorator to protect the views.
+
+## 2. Other Improvement Ideas
+
+*   **User Dashboard:** Enhance the user dashboard to show a history of their lease applications and their current status.
+*   **Vehicle Availability:** When a lease is 'Active', the corresponding vehicle's `availability_status` is set to 'Leased'. Consider what happens when the lease is 'Completed'. The vehicle should probably become 'Available' again. This could be handled with a signal.
+*   **Admin Notifications:** Improve the admin email notification to include more details directly in the email, so the admin doesn't always have to click through to the site.
+*   **Testing:** The project has `tests.py` files, but they are empty. Adding unit and integration tests would improve the project's reliability.
+*   **API:** Consider adding a REST API (e.g., using Django REST Framework) to allow for a separate frontend application or mobile app in the future.
+*   **Deployment:** The `settings.py` file has `DEBUG = True`. For a production environment, this should be `False`. The project also uses a simple SQLite database, which is not recommended for production. Consider switching to a more robust database like PostgreSQL.
